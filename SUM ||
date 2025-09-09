@@ -1,0 +1,67 @@
+#include <stdlib.h>
+#include <string.h>
+
+
+typedef struct {
+    long long key;  
+    int value;      
+    int used;
+} Entry;
+
+int fourSumCount(int* nums1, int nums1Size, 
+                 int* nums2, int nums2Size, 
+                 int* nums3, int nums3Size, 
+                 int* nums4, int nums4Size) {
+    
+    int n = nums1Size;
+    int capacity = n * n * 2; 
+    Entry* map = (Entry*)calloc(capacity, sizeof(Entry));
+
+    #define HASH(x) (((x) % capacity + capacity) % capacity)
+
+
+    void insert(long long key) {
+        int idx = HASH(key);
+        while (map[idx].used) {
+            if (map[idx].key == key) {
+                map[idx].value++;
+                return;
+            }
+            idx = (idx + 1) % capacity;
+        }
+        map[idx].key = key;
+        map[idx].value = 1;
+        map[idx].used = 1;
+    }
+
+   
+    int find(long long key) {
+        int idx = HASH(key);
+        while (map[idx].used) {
+            if (map[idx].key == key) {
+                return map[idx].value;
+            }
+            idx = (idx + 1) % capacity;
+        }
+        return 0;
+    }
+
+ 
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            insert((long long)nums1[i] + nums2[j]);
+        }
+    }
+
+
+    int count = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            long long target = -(long long)(nums3[i] + nums4[j]);
+            count += find(target);
+        }
+    }
+
+    free(map);
+    return count;
+}
