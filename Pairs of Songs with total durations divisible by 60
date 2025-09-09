@@ -1,0 +1,11 @@
+int numPairsDivisibleBy60(int* time, int timeSize) {
+    int map[60] = {0};
+    int result = 0;
+    for (int i = 0; i < timeSize; i++) {
+        int t = time[i] % 60;
+        int y = (60 - t) % 60;
+        result += map[y];
+        map[t]++;
+    }
+    return result;
+}
