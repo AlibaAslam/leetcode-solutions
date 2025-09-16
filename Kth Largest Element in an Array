@@ -1,0 +1,39 @@
+
+
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int partition(int* nums, int left, int right) {
+    int pivot_value = nums[right];
+    int i = left;
+    for (int j = left; j < right; j++) {
+        if (nums[j] <= pivot_value) {
+            swap(&nums[i], &nums[j]);
+            i++;
+        }
+    }
+    swap(&nums[i], &nums[right]);
+    return i;
+}
+
+int findKthLargest(int* nums, int numsSize, int k) {
+    int left = 0;
+    int right = numsSize - 1;
+    int target_index = numsSize - k;
+
+    while (left <= right) {
+        int pivot_index = partition(nums, left, right);
+        if (pivot_index == target_index) {
+            return nums[pivot_index];
+        } else if (pivot_index < target_index) {
+            left = pivot_index + 1;
+        } else {
+            right = pivot_index - 1;
+        }
+    }
+    return -1; 
+}
+
