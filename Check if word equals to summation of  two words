@@ -1,0 +1,20 @@
+class Solution {
+private:
+    long long getNumericalValue(std::string word) {
+        long long value = 0;
+        for (int i = 0; i < word.length(); ++i) {
+            int digit = word[i] - 'a';
+            value = value * 10 + digit;
+        }
+        return value;
+    }
+
+public:
+    bool isSumEqual(std::string firstWord, std::string secondWord, std::string targetWord) {
+        long long val1 = getNumericalValue(firstWord);
+        long long val2 = getNumericalValue(secondWord);
+        long long val3 = getNumericalValue(targetWord);
+
+        return val1 + val2 == val3;
+    }
+};
